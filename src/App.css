@@ -22,9 +22,26 @@
 
 /* small screens: back to current size */
 @media (max-width: 1100px) {
+  .tt-hero {
+    grid-template-columns: 1fr;
+    padding: 22px 22px 18px 22px;
+    margin-top: 48px; /* <-- increase/decrease this */
+  }
+
+
+
   .tt-logo {
     height: 40px;
   }
+
+  /* phone-only: nudge the hero image horizontally */
+  @media (max-width: 480px) {
+    .tt-art {
+      transform: translateX(-30spx);
+    }
+  }
+
+
 }
 
 /* Hero grid */
@@ -111,10 +128,37 @@
   font-weight: 700;
   cursor: pointer;
   box-sizing: border-box;
+
+  /* prevent "Notify Me" wrapping + prevent button shrinking */
+  white-space: nowrap;
+  flex: 0 0 auto;
+  min-width: 132px;
 }
 
 .tt-pillBtn:active {
   transform: translateY(1px);
+}
+
+/* extra-small phones: prevent horizontal overflow / cropping */
+@media (max-width: 420px) {
+  .tt-form {
+    width: 100%;
+  }
+
+  .tt-pill {
+    height: 60px;
+  }
+
+  .tt-pillInput {
+    padding: 0 14px;
+    font-size: 16px;
+  }
+
+  .tt-pillBtn {
+    min-width: 112px;
+    padding: 0 18px;
+    font-size: 15px;
+  }
 }
 
 
@@ -250,11 +294,15 @@
 
 /* Responsive */
 @media (max-width: 1100px) {
-  .tt-hero {
-  grid-template-columns: 1fr;
-  padding: 22px 22px 18px 22px;
-}
+  /* header padding was still desktop-ish on phones */
+  .tt-header {
+    padding: 22px 22px 0 22px;
+  }
 
+  .tt-hero {
+    grid-template-columns: 1fr;
+    padding: 22px 22px 18px 22px;
+  }
 
   .tt-title {
     font-size: 64px;
@@ -287,14 +335,9 @@
     height: 23px;
   }
 
-
-
-
-
-
   /* accordion spacing on small */
   .tt-sections {
-    margin-top: 72px;        /* creates space below hero so it’s not clickable/too tight */
+    margin-top: 72px;
     padding: 44px 22px;
   }
 
@@ -304,6 +347,33 @@
 
   .tt-accBody {
     padding-left: 48px;
+  }
+}
+
+/* PHONE layout + stop right-side clipping */
+@media (max-width: 520px) {
+  .tt-title {
+    font-size: 52px;
+  }
+
+  .tt-form {
+    width: calc(100% - 18px); /* <-- increase/decrease this number */
+    box-sizing: border-box;
+  }
+
+  .tt-pillInput {
+    min-width: 0; /* ✅ critical: allows flex input to shrink instead of pushing layout wider */
+  }
+
+  .tt-pillBtn {
+    min-width: 112px;
+    padding: 0 18px;
+    font-size: 14px;
+  }
+
+  /* don’t pull socials upward on phones */
+  .tt-socialsFrame {
+    margin-top: 0;
   }
 }
 
@@ -564,6 +634,14 @@
 
   .tt-accBody {
     padding-left: 48px;
+  }
+}
+
+/* Phone-only: make the hero image cluster larger + nudge left */
+@media (max-width: 520px) {
+  .tt-art {
+    width: min(760px, 150.5%);
+    transform: translateX(-20px); /* <-- increase/decrease to taste */
   }
 }
 
