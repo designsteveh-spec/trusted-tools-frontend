@@ -122,8 +122,9 @@ function SiteAccordions({
   setOpenAbout: React.Dispatch<React.SetStateAction<boolean>>;
   openPrivacy: boolean;
   setOpenPrivacy: React.Dispatch<React.SetStateAction<boolean>>;
-  aboutRef: React.RefObject<HTMLDivElement>;
-  privacyRef: React.RefObject<HTMLDivElement>;
+  aboutRef: React.RefObject<HTMLDivElement | null>;
+privacyRef: React.RefObject<HTMLDivElement | null>;
+
 }) {
   return (
     <section className="tt-sections">
