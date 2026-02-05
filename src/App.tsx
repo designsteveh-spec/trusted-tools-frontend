@@ -114,7 +114,12 @@ export default function App() {
           <div className="tt-art">
             <div className="tt-glow" />
             <div className="tt-circle" />
-            <img className="tt-heroImage" src={ManyAppsMain} alt="" />
+            <a
+  href="https://ghostjobs.trusted-tools.com/"
+  aria-label="Ghost Job Checker"
+>
+  <img className="tt-heroImage" src={ManyAppsMain} alt="" />
+</a>
           </div>
         </section>
 
