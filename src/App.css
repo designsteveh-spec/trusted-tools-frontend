@@ -170,6 +170,20 @@
 }
 
 
+.tt-confirm {
+  margin-top: 18px;
+  font-size: 30px;
+  font-weight: 800;
+  color: #424FFD; /* <-- your confirmation color */
+}
+
+.tt-mlError {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #b42318;
+}
+
+
 /* Right side art */
 .tt-right {
   position: relative;

@@ -13,6 +13,11 @@ export default function App() {
   const [openAbout, setOpenAbout] = useState(false);
   const [openPrivacy, setOpenPrivacy] = useState(false);
 
+  // MailerLite UI state (for inline success/error)
+  const [mlStatus, setMlStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const mlFormRef = useRef<HTMLFormElement | null>(null);
+  const mlTimeoutRef = useRef<number | null>(null);
+
 
 
   const aboutRef = useRef<HTMLDivElement | null>(null);
@@ -21,18 +26,22 @@ export default function App() {
   useEffect(() => {
     // ✅ MailerLite success callback MUST be global
     (window as any).ml_webform_success_34679109 = function () {
-      const form = document.querySelector(
-        ".ml-subscribe-form-34679109 .row-form"
-      ) as HTMLElement | null;
-      const success = document.querySelector(
-        ".ml-subscribe-form-34679109 .row-success"
-      ) as HTMLElement | null;
-
-      if (form && success) {
-        form.style.display = "none";
-        success.style.display = "block";
-      }
+      if (mlTimeoutRef.current) window.clearTimeout(mlTimeoutRef.current);
+      setMlStatus("success");
     };
+
+    // When user submits, show "sending…" + fallback error if no success callback arrives
+    const onSubmit = () => {
+      setMlStatus("sending");
+
+      if (mlTimeoutRef.current) window.clearTimeout(mlTimeoutRef.current);
+      mlTimeoutRef.current = window.setTimeout(() => {
+        setMlStatus("error");
+      }, 8000); // <-- increase/decrease fallback time
+    };
+
+    const formEl = mlFormRef.current;
+    if (formEl) formEl.addEventListener("submit", onSubmit);
 
     // Load MailerLite script once
     const script = document.createElement("script");
@@ -47,6 +56,9 @@ export default function App() {
     ).catch(() => {});
 
     return () => {
+      if (formEl) formEl.removeEventListener("submit", onSubmit);
+      if (mlTimeoutRef.current) window.clearTimeout(mlTimeoutRef.current);
+
       document.body.removeChild(script);
       delete (window as any).ml_webform_success_34679109;
     };
@@ -71,38 +83,41 @@ export default function App() {
 
 
           <div className="ml-subscribe-form-34679109">
-            <div className="row-form">
-              <form
-                className="tt-form ml-block-form"
-                action="https://assets.mailerlite.com/jsonp/1985110/forms/173902126632666375/subscribe"
-                method="post"
-              >
-                <div className="tt-pill">
-                  <input
-                    className="tt-pillInput"
-                    aria-label="email"
-                    aria-required="true"
-                    type="email"
-                    name="fields[email]"
-                    placeholder="Enter your email address"
-                    autoComplete="email"
-                    required
-                  />
-                  <button className="tt-pillBtn" type="submit">
-                    Notify Me
-                  </button>
-                </div>
+            {mlStatus === "success" ? (
+              <div className="tt-confirm">Confirmed! Stay tuned for updates.</div>
+            ) : (
+              <>
+                <form
+                  ref={mlFormRef}
+                  className="tt-form ml-block-form"
+                  action="https://assets.mailerlite.com/jsonp/1985110/forms/173902126632666375/subscribe"
+                  method="post"
+                >
+                  <div className="tt-pill">
+                    <input
+                      className="tt-pillInput"
+                      aria-label="email"
+                      aria-required="true"
+                      type="email"
+                      name="fields[email]"
+                      placeholder="Enter your email address"
+                      autoComplete="email"
+                      required
+                    />
+                    <button className="tt-pillBtn" type="submit" disabled={mlStatus === "sending"}>
+                      {mlStatus === "sending" ? "Sending…" : "Notify Me"}
+                    </button>
+                  </div>
 
-                <input type="hidden" name="ml-submit" value="1" />
-                <input type="hidden" name="anticsrf" value="true" />
-              </form>
-            </div>
+                  <input type="hidden" name="ml-submit" value="1" />
+                  <input type="hidden" name="anticsrf" value="true" />
+                </form>
 
-            <div className="row-success" style={{ display: "none", marginTop: 10 }}>
-              <div style={{ fontSize: 14, color: "#0b0f19" }}>
-                Thanks — you’re on the list.
-              </div>
-            </div>
+                {mlStatus === "error" && (
+                  <div className="tt-mlError">Hmm—something went wrong. Please try again.</div>
+                )}
+              </>
+            )}
           </div>
 
           <p className="tt-note">Don’t worry, we won’t spam you.</p>
