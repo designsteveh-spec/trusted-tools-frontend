@@ -1,42 +1,570 @@
-#root {
+/* Full-page layout */
+.tt-page {
+  min-height: 100vh;
+  background: #ffffff;
+  position: relative;
+  overflow-x: hidden;   /* keep glow from causing sideways scroll */
+  overflow-y: visible;  /* allow full-bleed sections to extend */
+}
+
+/* Top-left logo */
+.tt-header {
+  position: relative;
+  padding: 28px 48px 0 48px;
+  z-index: 2;
+}
+
+.tt-logo {
+  height: 80px; /* double size on full view */
+  width: auto;
+  display: block;
+}
+
+/* small screens: back to current size */
+@media (max-width: 1100px) {
+  .tt-logo {
+    height: 40px;
+  }
+}
+
+/* Hero grid */
+.tt-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  align-items: center;
+  gap: 72px;
+  padding: 30px 48px 24px 148px; /* reduced bottom padding since socials are below */
+  height: auto;                  /* ✅ key: no viewport-locked height */
+  min-height: 0;                 /* ✅ prevents overlap on small screens */
+}
+
+
+
+/* Left side */
+.tt-left {
+  z-index: 2;
+}
+
+.tt-title {
+  font-size: 86px;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  margin: 0 0 36px 0;
+  color: #0b0f19;
+  font-weight: 800;
+}
+
+/* Email pill (rebuilt to avoid border artifacts) */
+.tt-form {
+  width: min(760px, 92%);
+}
+
+.tt-pill {
+  position: relative;
+  height: 64px;
+  border-radius: 999px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  padding: 6px;              /* gap between border + inner content */
+  overflow: hidden;          /* kills the “break point” artifacts */
+  box-sizing: border-box;
+}
+
+/* The stroke is drawn by a pseudo-element, not border */
+.tt-pill::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 2px solid #3a47ff;
+  pointer-events: none;
+}
+
+.tt-pillInput {
+  flex: 1;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0 18px;
+  font-size: 18px;
+  font-weight: 500;          /* not bold */
+  color: #0b0f19;
+  box-sizing: border-box;
+}
+
+.tt-pillInput::placeholder {
+  color: #9aa3b2;
+  font-weight: 500;          /* not bold */
+}
+
+.tt-pillBtn {
+  height: 100%;
+  border: none;
+  border-radius: 999px;
+  background: #3a47ff;
+  color: #ffffff;
+  padding: 0 26px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.tt-pillBtn:active {
+  transform: translateY(1px);
+}
+
+
+.tt-note {
+  margin: 26px 0 0 0;
+  font-size: 29px;
+  font-weight: 500; /* regular / medium */
+  color: #0b0f19;
+}
+
+
+/* Right side art */
+.tt-right {
+  position: relative;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  z-index: 1;
+
+  /* pull the whole art cluster up (desktop) */
+  transform: translateY(-70px);
+}
+
+
+.tt-art {
+  position: relative;
+  display: inline-block;
+  width: min(760px, 90%);
+}
+
+/* This box becomes the anchor for glow + circle + image */
+.tt-art {
+  position: relative;
+  width: min(760px, 90%);
+  display: grid;
+  place-items: center;
+}
+
+
+.tt-artWrap {
+  position: relative;
+  width: min(760px, 90%);
+  display: grid;
+  place-items: center;
+}
+
+
+.tt-glow {
+  position: absolute;
+  width: 900px;
+  height: 900px;
+  border-radius: 999px;
+  background: radial-gradient(
+    circle at center,
+    rgba(83, 94, 255, 0.75),
+    rgba(83, 94, 255, 0.0) 65%
+  );
+  filter: blur(2px);
+
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+
+
+
+.tt-circle {
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  border-radius: 999px;
+  background: rgba(60, 74, 255, 0.95);
+
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+
+
+
+.tt-heroImage {
+  position: relative;
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.12));
+}
+
+
+
+
+/* Social icons bottom-right (always visible) */
+/* Socials lower frame (a real row, not floating) */
+.tt-socialsFrame {
+  background: #ffffff;
+  padding: 0px 48px 28px 48px;
+}
+
+.tt-socialsFrame { margin-top: -12px; }
+
+
+@media (max-width: 1100px) {
+  .tt-socialsFrame {
+    padding: 14px 22px 22px 22px;
+  }
+}
+
+.tt-socials {
+  display: flex;
+  justify-content: flex-end;
+  gap: 18px;
+}
+
+
+
+.tt-social {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+}
+
+.tt-social img {
+  width: 46px;
+  height: 46px;
+  display: block;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .tt-hero {
+  grid-template-columns: 1fr;
+  padding: 22px 22px 18px 22px;
+}
+
+
+  .tt-title {
+    font-size: 64px;
+  }
+
+  .tt-note {
+    font-size: 28px;
+  }
+
+  .tt-right {
+    min-height: 520px;
+    transform: none; /* don’t offset when stacked */
+  }
+
+  /* when stacked, remove circle/glow — just show the image */
+  .tt-glow,
+  .tt-circle {
+    display: none;
+  }
+
+  /* top socials: shrink to 50% on small screens (footer socials unaffected) */
+  .tt-socialsFrame .tt-social {
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+  }
+
+  .tt-socialsFrame .tt-social img {
+    width: 23px;
+    height: 23px;
+  }
+
+
+
+
+
+
+  /* accordion spacing on small */
+  .tt-sections {
+    margin-top: 72px;        /* creates space below hero so it’s not clickable/too tight */
+    padding: 44px 22px;
+  }
+
+  .tt-accTitle {
+    font-size: 26px;
+  }
+
+  .tt-accBody {
+    padding-left: 48px;
+  }
+}
+
+
+/* Accordion section under hero */
+.tt-sections {
+  background: #f8fafc;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding: 64px 0;
+}
+
+.tt-sectionsInner {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: 0 48px;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+
+.tt-accItem {
+  padding: 26px 0;
+  border-top: 1px solid rgba(11, 15, 25, 0.08);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.tt-accItem:first-child {
+  border-top: none;
+}
+
+.tt-accHeader {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  background: transparent;
+  border: 0;
+  padding: 18px 0;
+  cursor: pointer;
+
+  text-align: left;
+  outline: none;
+  box-shadow: none;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+.tt-accHeader:focus,
+.tt-accHeader:focus-visible,
+.tt-accHeader:active {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Footer: remove ugly focus outlines */
+.tt-footer a,
+.tt-footer button {
+  outline: none;
+  box-shadow: none;
+}
+
+.tt-footer a:focus,
+.tt-footer a:focus-visible,
+.tt-footer a:active,
+.tt-footer button:focus,
+.tt-footer button:focus-visible,
+.tt-footer button:active {
+  outline: none;
+  box-shadow: none;
+}
+
+
+.tt-accIcon {
+  display: inline-flex;
+  width: 32px;              /* fixed icon slot = consistent */
+  justify-content: center;
+  align-items: center;
+  font-size: 26px;          /* keeps + and − same visual size */
+  line-height: 1;
+  font-weight: 700;
+  color: #0b0f19;
+}
+
+.tt-accTitle {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.tt-accBody {
+  padding: 20px 0 0 52px; /* aligns body with title text */
+}
+
+.tt-accBlock strong {
+  display: block;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+}
+
+.tt-accP {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  line-height: 1.75;
+  color: rgba(11, 15, 25, 0.82);
+}
+
+.tt-divider {
+  height: 1px;
+  background: rgba(11, 15, 25, 0.12);
+  margin: 18px 0;
+}
+
+/* Footer */
+.tt-footer {
+  width: 100%;
+}
+
+.tt-footerTop {
+  background: #ffffff;
+  padding: 64px 0;
+}
+
+.tt-footerBar {
+  background: #f8fafc;
+  padding: 36px 0;
+}
+
+.tt-footerInner {
+  width: 100%;
+  margin: 0;
+  padding: 0 10%;
+  box-sizing: border-box;
+}
+
+.tt-footerTop .tt-footerInner {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.tt-footerColLeft {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* key: left align logo + slogan */
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+
+.tt-footerLogo {
+  height: 42px; /* tweak if needed to match mock */
+  width: auto;
+  display: block;
+}
+
+.tt-footerSlogan {
+  margin: 0;
+  font-size: 20px;
+  color: rgba(11, 15, 25, 0.55);
+  line-height: 1.4;
+  max-width: 420px;
+}
+
+.tt-footerCol,
+.tt-footerColRight {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tt-footerLink {
+  font-size: 22px;
+  color: rgba(11, 15, 25, 0.55);
+}
+
+.tt-footerLink:hover {
+  color: rgba(11, 15, 25, 0.75);
+}
+
+.tt-footerNote {
+  font-size: 22px;
+  color: rgba(11, 15, 25, 0.55);
+  margin-bottom: 10px;
+}
+
+.tt-footerAnchor {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  font-size: 22px;
+  color: rgba(11, 15, 25, 0.55);
+  text-align: left;
+  cursor: pointer;
+}
+
+.tt-footerAnchor:hover {
+  color: rgba(11, 15, 25, 0.75);
+}
+
+.tt-footerBarInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tt-footerSocials {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+
+.tt-footerSocial {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  display: grid;
+  place-items: center;
+}
+
+.tt-footerSocial img {
+  width: 23px;
+  height: 23px;
+  display: block;
+}
+
+.tt-footerCopy {
+  font-size: 22px;
+  color: rgba(11, 15, 25, 0.55);
+}
+
+/* Footer responsive */
+@media (max-width: 1100px) {
+  .tt-footerTop .tt-footerInner {
+    grid-template-columns: 1fr;
+    gap: 28px;
   }
-  to {
-    transform: rotate(360deg);
+
+  .tt-footerBarInner {
+    flex-direction: column;
+    gap: 18px;
+    align-items: flex-start;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+
+/* stacked layout padding */
+@media (max-width: 1100px) {
+  .tt-sections {
+    padding: 44px 22px;
+  }
+
+  .tt-accTitle {
+    font-size: 26px;
+  }
+
+  .tt-accBody {
+    padding-left: 48px;
   }
 }
 
-.card {
-  padding: 2em;
-}
 
-.read-the-docs {
-  color: #888;
-}
