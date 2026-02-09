@@ -167,6 +167,8 @@
   font-size: 29px;
   font-weight: 500; /* regular / medium */
   color: #0b0f19;
+  line-height: 1.35; /* avoid descender clipping on some mobile browsers */
+  padding-bottom: 2px;
 }
 
 
@@ -373,6 +375,7 @@
   .tt-form {
     width: calc(100% - 18px); /* <-- increase/decrease this number */
     box-sizing: border-box;
+    margin: 0 auto;
   }
 
   .tt-pillInput {
@@ -388,6 +391,14 @@
   /* don’t pull socials upward on phones */
   .tt-socialsFrame {
     margin-top: 0;
+  }
+
+  .tt-accTitle {
+    font-size: 22px;
+  }
+
+  .tt-note {
+    font-size: 24px;
   }
 }
 
@@ -433,6 +444,7 @@
   box-shadow: none;
 
   -webkit-tap-highlight-color: transparent;
+  color: #0b0f19; /* ensure strong contrast on mobile browsers */
 }
 
 
@@ -476,6 +488,7 @@
   font-size: 30px;
   font-weight: 700;
   letter-spacing: -0.01em;
+  color: #0b0f19;
 }
 
 .tt-accBody {
@@ -658,5 +671,3 @@
     transform: translateX(-20px); /* <-- increase/decrease to taste */
   }
 }
-
-
