@@ -464,9 +464,10 @@ function SiteFooter({
             </a>
           </div>
 
-          <div className="tt-footerCopy">Â© 2026 Trusted Tools</div>
+          <div className="tt-footerCopy">© 2026 Trusted Tools</div>
         </div>
       </div>
     </footer>
   );
 }
+
